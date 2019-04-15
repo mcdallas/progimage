@@ -9,7 +9,7 @@ from flask import url_for
 from PIL import Image
 
 
-class ApiTest(unittest.TestCase):
+class TestApi(unittest.TestCase):
 
     def setUp(self):
         self.app = create_app()
