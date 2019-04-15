@@ -9,13 +9,16 @@ from flask import url_for
 from PIL import Image
 
 
+HERE = pathlib.Path(__file__).parent.absolute()
+
+
 class TestApi(unittest.TestCase):
 
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client()
         self.formats = self.app.config["ALLOWED_FORMATS"]
-        self.images = [path for path in pathlib.Path("images").iterdir() if path.suffix.endswith(self.formats)]
+        self.images = [path for path in (HERE / "images").iterdir() if path.suffix.endswith(self.formats)]
 
     def test_upload(self):
 

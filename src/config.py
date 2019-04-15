@@ -5,7 +5,7 @@ class Config:
     SEND_FILE_MAX_AGE_DEFAULT = 12 * 60 * 60  # 12 hours
 
     # App
-    MAXIMUM_FILENAME_LENGTH = 50
+    MAXIMUM_FILENAME_LENGTH = 255
     ALLOWED_FORMATS = ('png', 'jpg', 'jpeg', 'gif', 'bmp')
 
 
