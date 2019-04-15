@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 flask = "*"
 pillow = "*"
+flask-selfdoc = "*"
 
 [dev-packages]
 ipython = "*"

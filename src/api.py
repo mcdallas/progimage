@@ -4,8 +4,9 @@ from hashlib import sha256 as hashfunc
 from flask import make_response, jsonify, Blueprint, request, current_app, send_file
 
 from .image import convert_image, validate_image
+from .doc import auto
 
-blueprint = Blueprint('api', __name__, url_prefix='/api')
+api = Blueprint('api', __name__, url_prefix='/api')
 
 
 class ApiResult:
@@ -29,7 +30,7 @@ class ApiException(Exception):
         return ApiResult({'error': self.message}, status=self.status)
 
 
-blueprint.register_error_handler(ApiException, lambda err: err.to_result())
+api.register_error_handler(ApiException, lambda err: err.to_result())
 
 
 def lookup_image(uniqueid, extension):
@@ -44,9 +45,10 @@ def lookup_image(uniqueid, extension):
     return None
 
 
-@blueprint.route('/upload', methods=['POST'])
+@api.route('/upload', methods=['POST'])
+@auto.doc(args=["file"])
 def upload():
-    """Receives and image, assigns a unique id and stores it"""
+    """Receives an image, assigns a unique id and stores it"""
 
     if 'file' not in request.files:
         raise ApiException('Expected file upload', 422)
@@ -78,7 +80,8 @@ def upload():
     raise ApiException("Error saving file", 500)
 
 
-@blueprint.route('/image/<fileid>')
+@api.route('/image/<fileid>')
+@auto.doc(args=["format"], defaults={"format": "png"})
 def get_file(fileid):
     """Returns an image with the given format"""
     extension = request.args.get('format', 'png').lower()
@@ -90,8 +93,8 @@ def get_file(fileid):
     if not image:
         raise ApiException("Not found", 404)
 
-    # Response is cached for 12 hours
     return send_file(image, mimetype=f"image/{extension}")
+
 
 
 

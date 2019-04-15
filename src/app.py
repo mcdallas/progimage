@@ -1,7 +1,8 @@
 
 from flask import Flask
-from .api import ApiResult, blueprint
+from .api import ApiResult, api
 from .storage import InMemoryBackend, FileSystemBackend
+from .doc import auto, doc
 
 
 class Api(Flask):
@@ -17,7 +18,10 @@ class Api(Flask):
 def create_app(config='src.config.Development'):
     app = Api(__name__)
     app.config.from_object(config)
-    app.register_blueprint(blueprint)
+    auto.init_app(app)
+    app.register_blueprint(api)
+    app.register_blueprint(doc)
+
     # app.storage = FileSystemBackend("/tmp")
     app.storage = InMemoryBackend()
     return app
