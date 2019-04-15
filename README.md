@@ -16,7 +16,7 @@ run run.py
 pipenv run python run.py
 ```
 
-visit http://127.0.0.1:8000/
+visit http://127.0.0.1:8000/doc
 
 
 to run the tests
